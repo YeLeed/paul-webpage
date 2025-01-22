@@ -33,15 +33,12 @@
       <button class="bg-black text-white p-2 m-2 rounded hover:bg-opacity-75" onclick="reset()">Reset</button>
     </div>
 
-    <!-- User Impersonation Form -->
-    <div class="bg-white p-4 mt-6 rounded shadow-md flex flex-col items-center">
+    <!-- User Impersonation Form (Only User ID) -->
+    <div class="bg-white p-6 mt-6 rounded shadow-md flex flex-col items-center w-80">
       <h2 class="text-lg font-bold mb-2">Intercom User Impersonation</h2>
-      <label class="block mb-1">User ID: <input type="text" id="userId" class="border p-1"></label>
-      <label class="block mb-1">Email: <input type="text" id="userEmail" class="border p-1"></label>
-      <label class="block mb-1">Name: <input type="text" id="userName" class="border p-1"></label>
-      <label class="block mb-1">Role: <input type="text" id="userRole" class="border p-1"></label>
-      <button class="bg-blue-500 text-white p-2 mt-2 rounded hover:bg-blue-600" onclick="setUserAttributes()">Update Intercom</button>
-      <button class="bg-gray-500 text-white p-2 mt-2 rounded hover:bg-gray-600" onclick="generateRandomUser()">Generate Random User</button>
+      <input type="text" id="userId" class="border p-2 w-full mb-2" placeholder="Enter User ID">
+      <button class="bg-blue-500 text-white p-2 w-full mt-2 rounded hover:bg-blue-600" onclick="setUserAttributes()">Update Intercom</button>
+      <button class="bg-gray-500 text-white p-2 w-full mt-2 rounded hover:bg-gray-600" onclick="generateRandomUser()">Generate Random User</button>
     </div>
 
     <script>
@@ -86,30 +83,22 @@
     <script>
       function setUserAttributes() {
         const userId = document.getElementById("userId").value;
-        const userEmail = document.getElementById("userEmail").value;
-        const userName = document.getElementById("userName").value;
-        const userRole = document.getElementById("userRole").value;
+
+        if (!userId.trim()) {
+          alert("Please enter a User ID.");
+          return;
+        }
 
         window.Intercom("update", {
-          user_id: userId,
-          email: userEmail,
-          name: userName,
-          role: userRole
+          user_id: userId
         });
 
-        alert("User attributes updated in Intercom!");
+        alert(`Intercom updated with User ID: ${userId}`);
       }
 
       function generateRandomUser() {
         const randomId = "user_" + Math.floor(Math.random() * 100000);
-        const randomEmail = "user" + Math.floor(Math.random() * 1000) + "@example.com";
-        const randomName = "User " + Math.floor(Math.random() * 1000);
-        const randomRole = ["Admin", "User", "Guest"][Math.floor(Math.random() * 3)];
-
         document.getElementById("userId").value = randomId;
-        document.getElementById("userEmail").value = randomEmail;
-        document.getElementById("userName").value = randomName;
-        document.getElementById("userRole").value = randomRole;
       }
     </script>
 
