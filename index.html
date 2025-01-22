@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
   <head>
@@ -12,45 +11,109 @@
         const cookies = document.cookie.split(";");
 
         for (let i = 0; i < cookies.length; i++) {
-
             const cookie = cookies[i];
-
             const eqPos = cookie.indexOf("=");
-
             const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-
-            // Set the cookie's expiration date to a past date to delete it
-
             document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-
         }
 
         window.localStorage.clear();
         window.sessionStorage.clear();
         window.location.reload();
-
       }
     </script>
   </head>
-  <body class="p-6 flex flex-col flex-1 items-center justify-center min-h-screen bg-cover" style="background-image: url('https://downloads.intercomcdn.com/i/o/1051523575/8c16c6bb97ae791131ead20c/blur.jpg')">
+  <body class="p-6 flex flex-col flex-1 items-center justify-center min-h-screen bg-cover" 
+        style="background-image: url('https://downloads.intercomcdn.com/i/o/1051523575/8c16c6bb97ae791131ead20c/blur.jpg')">
+    
     <div class="flex flex-col space-y-2 items-center">
       <div>
-        <img src="https://static.intercomassets.com/assets/default-avatars/fin/128-6a5eabbb84cc2b038b2afc6698ca0a974faf7adc9ea9f0fb3c3e78ac12543bc5.png" height="50" width="50"  >
+        <img src="https://static.intercomassets.com/assets/default-avatars/fin/128-6a5eabbb84cc2b038b2afc6698ca0a974faf7adc9ea9f0fb3c3e78ac12543bc5.png" height="50" width="50">
       </div>
       <button class="bg-black text-white p-2 m-2 rounded hover:bg-opacity-75" onclick="reset()">Reset</button>
     </div>
+
+    <!-- User Impersonation Form -->
+    <div class="bg-white p-4 mt-6 rounded shadow-md flex flex-col items-center">
+      <h2 class="text-lg font-bold mb-2">Intercom User Impersonation</h2>
+      <label class="block mb-1">User ID: <input type="text" id="userId" class="border p-1"></label>
+      <label class="block mb-1">Email: <input type="text" id="userEmail" class="border p-1"></label>
+      <label class="block mb-1">Name: <input type="text" id="userName" class="border p-1"></label>
+      <label class="block mb-1">Role: <input type="text" id="userRole" class="border p-1"></label>
+      <button class="bg-blue-500 text-white p-2 mt-2 rounded hover:bg-blue-600" onclick="setUserAttributes()">Update Intercom</button>
+      <button class="bg-gray-500 text-white p-2 mt-2 rounded hover:bg-gray-600" onclick="generateRandomUser()">Generate Random User</button>
+    </div>
+
     <script>
       window.intercomSettings = {
         api_base: "https://api-iam.intercom.io",
-        app_id: "rg58rsci",
+        app_id: "i5zt698m",
       }
     </script>
-    
-    
+
     <script>
-      // We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/mw2u5h8i'
-      (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/mw2u5h8i';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+      (function(){
+        var w=window;
+        var ic=w.Intercom;
+        if(typeof ic==="function"){
+          ic('reattach_activator');
+          ic('update',w.intercomSettings);
+        } else {
+          var d=document;
+          var i=function(){i.c(arguments);};
+          i.q=[];
+          i.c=function(args){i.q.push(args);};
+          w.Intercom=i;
+          var l=function(){
+            var s=d.createElement('script');
+            s.type='text/javascript';
+            s.async=true;
+            s.src='https://widget.intercom.io/widget/mw2u5h8i';
+            var x=d.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s,x);
+          };
+          if(document.readyState==='complete'){
+            l();
+          } else if(w.attachEvent){
+            w.attachEvent('onload',l);
+          } else {
+            w.addEventListener('load',l,false);
+          }
+        }
+      })();
     </script>
-    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=2b1b97a6-bb0b-46e9-8a14-489aeb0ca1e5"> </script>
+
+    <script>
+      function setUserAttributes() {
+        const userId = document.getElementById("userId").value;
+        const userEmail = document.getElementById("userEmail").value;
+        const userName = document.getElementById("userName").value;
+        const userRole = document.getElementById("userRole").value;
+
+        window.Intercom("update", {
+          user_id: userId,
+          email: userEmail,
+          name: userName,
+          role: userRole
+        });
+
+        alert("User attributes updated in Intercom!");
+      }
+
+      function generateRandomUser() {
+        const randomId = "user_" + Math.floor(Math.random() * 100000);
+        const randomEmail = "user" + Math.floor(Math.random() * 1000) + "@example.com";
+        const randomName = "User " + Math.floor(Math.random() * 1000);
+        const randomRole = ["Admin", "User", "Guest"][Math.floor(Math.random() * 3)];
+
+        document.getElementById("userId").value = randomId;
+        document.getElementById("userEmail").value = randomEmail;
+        document.getElementById("userName").value = randomName;
+        document.getElementById("userRole").value = randomRole;
+      }
+    </script>
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=621c2670-4192-446e-b520-fd2713dae63f"></script>
+
   </body>
 </html>
